@@ -1,0 +1,23 @@
+body{
+    /* background-color: rgb(165, 141, 95); */
+    background-image: url(../media/fondos/fondo.jpeg);
+}
+.form_titulo{
+    text-align: center;
+    color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0.836);
+    font-size: 2rem;
+    margin-top: 20px;
+}
+.filas{
+    color: white;
+    background-color: rgba(0, 0, 0, 0.836);
+}
+.msjcontestado{
+    text-align: center;
+    margin-top: 20px;
+    color: rgb(210, 179, 54);
+    background-color: #000;
+    font-size: 1.5rem;
+  }
+

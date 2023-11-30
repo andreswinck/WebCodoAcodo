@@ -48,8 +48,6 @@ class Mensaje:
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS mensajes (
             id int(11) NOT NULL AUTO_INCREMENT,
             nombre varchar(30) NOT NULL,
-            apellido varchar(30) NOT NULL,
-            telefono varchar(15) NOT NULL,
             email varchar(60) NOT NULL,
             mensaje varchar(500) NOT NULL,
             fecha_envio datetime NOT NULL,
@@ -66,10 +64,10 @@ class Mensaje:
         self.cursor = self.conn.cursor(dictionary=True)
         
     #----------------------------------------------------------------
-    def enviar_mensaje(self, nombre, apellido, telefono, email, consulta):
-        sql = "INSERT INTO mensajes(nombre, apellido, telefono, email, mensaje, fecha_envio) VALUES (%s, %s, %s, %s, %s, %s)"
+    def enviar_mensaje(self, nombre, email, consulta):
+        sql = "INSERT INTO mensajes(nombre, email, mensaje, fecha_envio) VALUES (%s, %s, %s, %s)"
         fecha_envio = datetime.datetime.now()
-        valores = (nombre, apellido, telefono, email, consulta, fecha_envio)
+        valores = (nombre, email, consulta, fecha_envio)
         self.cursor.execute(sql, valores)        
         self.conn.commit()
         return True
@@ -98,7 +96,7 @@ class Mensaje:
 
     #----------------------------------------------------------------
     def mostrar_mensaje(self, id):
-         sql = f"SELECT id, nombre, apellido, telefono, email, mensaje, fecha_envio, leido, gestion, fecha_gestion FROM mensajes WHERE id = {id}"
+         sql = f"SELECT id, nombre, email, mensaje, fecha_envio, leido, gestion, fecha_gestion FROM mensajes WHERE id = {id}"
          self.cursor.execute(sql)
          return self.cursor.fetchone()
 
@@ -117,15 +115,13 @@ def listar_mensajes():
 
 #--------------------------------------------------------------------
 @app.route("/mensajes", methods=["POST"])
-def agregar_producto():
+def agregar_mensaje():
     #Recojo los datos del form
     nombre = request.form['nombre']
-    apellido = request.form['apellido']
-    telefono = request.form['telefono']
     email = request.form['email']
     consulta = request.form['mensaje']  
 
-    if mensaje.enviar_mensaje(nombre, apellido, telefono, email, consulta):
+    if mensaje.enviar_mensaje(nombre, email, consulta):
         return jsonify({"mensaje": "Mensaje agregado"}), 201
     else:
         return jsonify({"mensaje": "No fue posible registrar el mensaje"}), 400
